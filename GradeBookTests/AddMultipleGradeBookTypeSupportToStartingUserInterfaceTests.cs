@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Linq;
 using GradeBook.UserInterfaces;
@@ -8,9 +8,7 @@ namespace GradeBookTests
 {
     public class AddMultipleGradeBookTypeSupportToStartingUserInterfaceTests
     {
-        /// <summary>
-        ///     All Tests related to the "Increase Parts Check To 3" Task.
-        /// </summary>
+
         [Fact(DisplayName = "Increase Parts Check To 3 Test @set-parts-check-to-3")]
         public void IncreasePartsCheckToThreeTest()
         {
