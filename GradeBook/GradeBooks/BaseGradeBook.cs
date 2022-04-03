@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 
 using GradeBook.Enums;
@@ -9,14 +9,19 @@ using Newtonsoft.Json.Linq;
 
 namespace GradeBook.GradeBooks
 {
-    public class BaseGradeBook
+    public abstract class BaseGradeBook
     {
         public string Name { get; set; }
         public List<Student> Students { get; set; }
 
-        public BaseGradeBook(string name)
+        public GradeBookType Type { get; set; }
+
+        public bool IsWeighted { get; set; }
+
+        public BaseGradeBook(string name, bool isWeight)
         {
             Name = name;
+            IsWeighted = isWeight;
             Students = new List<Student>();
         }
 
@@ -106,18 +111,25 @@ namespace GradeBook.GradeBooks
 
         public virtual double GetGPA(char letterGrade, StudentType studentType)
         {
+            int bounusPoint = 0;
+
+            if((studentType == StudentType.DualEnrolled || studentType == StudentType.Honors) && IsWeighted)
+            {
+                bounusPoint++;
+            }
+
             switch (letterGrade)
             {
                 case 'A':
-                    return 4;
+                    return 4 + bounusPoint;
                 case 'B':
-                    return 3;
+                    return 3 + bounusPoint;
                 case 'C':
-                    return 2;
+                    return 2 + bounusPoint;
                 case 'D':
-                    return 1;
+                    return 1 + bounusPoint;
                 case 'F':
-                    return 0;
+                    return 0 + bounusPoint;
             }
             return 0;
         }
@@ -218,16 +230,9 @@ namespace GradeBook.GradeBooks
                 return 'F';
         }
 
-        /// <summary>
-        ///     Converts json to the appropriate gradebook type.
-        ///     Note: This method contains code that is not recommended practice.
-        ///     This has been used as a compromise to avoid adding additional complexity to the learner.
-        /// </summary>
-        /// <returns>The to gradebook.</returns>
         /// <param name="json">Json.</param>
         public static dynamic ConvertToGradeBook(string json)
         {
-            // Get GradeBookType from the GradeBook.Enums namespace
             var gradebookEnum = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
                                  from type in assembly.GetTypes()
                                  where type.FullName == "GradeBook.Enums.GradeBookType"
@@ -235,8 +240,6 @@ namespace GradeBook.GradeBooks
 
             var jobject = JsonConvert.DeserializeObject<JObject>(json);
             var gradeBookType = jobject.Property("Type")?.Value?.ToString();
-
-            // Check if StandardGradeBook exists
             if ((from assembly in AppDomain.CurrentDomain.GetAssemblies()
                  from type in assembly.GetTypes()
                  where type.FullName == "GradeBook.GradeBooks.StandardGradeBook"
@@ -249,15 +252,11 @@ namespace GradeBook.GradeBooks
                 else
                     gradeBookType = Enum.GetName(gradebookEnum, int.Parse(gradeBookType));
             }
-
-            // Get GradeBook from the GradeBook.GradeBooks namespace
             var gradebook = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
                              from type in assembly.GetTypes()
                              where type.FullName == "GradeBook.GradeBooks." + gradeBookType + "GradeBook"
                              select type).FirstOrDefault();
 
-
-            // Protection code
             if (gradebook == null)
                 gradebook = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
                              from type in assembly.GetTypes()
