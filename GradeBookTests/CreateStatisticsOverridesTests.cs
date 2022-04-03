@@ -16,16 +16,13 @@ namespace GradeBookTests
         {
             var rankedGradeBook = TestHelpers.GetUserType("GradeBook.GradeBooks.RankedGradeBook");
             Assert.True(rankedGradeBook != null, "`RankedGradeBook` wasn't found in the `GradeBooks.GradeBook` namespace.");
-
             var ctor = rankedGradeBook.GetConstructors().FirstOrDefault();
-
             var parameters = ctor.GetParameters();
             object gradeBook = null;
             if (parameters.Count() == 2 && parameters[0].ParameterType == typeof(string) && parameters[1].ParameterType == typeof(bool))
                 gradeBook = Activator.CreateInstance(rankedGradeBook, "Test GradeBook", true);
             else if (parameters.Count() == 1 && parameters[0].ParameterType == typeof(string))
                 gradeBook = Activator.CreateInstance(rankedGradeBook, "Test GradeBook");
-
             MethodInfo method = rankedGradeBook.GetMethod("CalculateStatistics");
             var output = string.Empty;
 
@@ -36,9 +33,7 @@ namespace GradeBookTests
                     Console.SetOut(consolestream);
                     method.Invoke(gradeBook, null);
                     output = consolestream.ToString().ToLower();
-
                     Assert.True(output.Contains("5 students") || output.Contains("five students"), "`GradeBook.GradeBooks.RankedGradeBook.CalculateStatistics` didn't respond with 'Ranked grading requires at least 5 students.' when there were less than 5 students.");
-
                     Assert.True(!output.Contains("average grade of all students is"), "`GradeBook.GradeBooks.RankedGradeBook.CalculateStatistics` still ran the base `CalculateStatistics` when there was less than 5 students.");
                 }
             }
@@ -73,9 +68,7 @@ namespace GradeBookTests
                 };
 
             gradeBook.GetType().GetProperty("Students").SetValue(gradeBook, students);
-
             output = string.Empty;
-
             try
             {
                 using (var consolestream = new StringWriter())
@@ -93,7 +86,6 @@ namespace GradeBookTests
                 Console.SetOut(standardOutput);
             }
         }
-
         [Fact(DisplayName = "Create CalculateStudentStatistics Override @create-override-calculatestudentstatistics")]
         public void OverrideCalculateStudentStatisticsTest()
         {
@@ -134,7 +126,6 @@ namespace GradeBookTests
                     output = consolestream.ToString().ToLower();
 
                     Assert.True(output.Contains("5 students") || output.Contains("five students"), "`GradeBook.GradeBooks.RankedGradeBook.CalculateStudentStatistics` didn't respond with 'Ranked grading requires at least 5 students.' when there were less than 5 students.");
-
                     Assert.True(!output.Contains("grades:"), "`GradeBook.GradeBooks.RankedGradeBook.CalculateStudentStatistics` still ran the base `CalculateStudentStatistics` when there was less than 5 students.");
                 }
             }
@@ -169,7 +160,6 @@ namespace GradeBookTests
                 };
 
             gradeBook.GetType().GetProperty("Students").SetValue(gradeBook, students);
-
             output = string.Empty;
 
             try
