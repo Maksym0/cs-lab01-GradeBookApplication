@@ -56,7 +56,6 @@ namespace GradeBookTests
 
             gradeBook.GetType().GetProperty("Students").SetValue(gradeBook, students);
             Assert.True((char)method.Invoke(gradeBook, new object[] { 0 }) == 'F', "`GradeBook.GradeBooks.RankedGradeBook.GetLetterGrade` didn't give an F when a student failed to earn a higher grade.");
-
             var filePath = ".." + Path.DirectorySeparatorChar + ".." + Path.DirectorySeparatorChar + ".." + Path.DirectorySeparatorChar + ".." + Path.DirectorySeparatorChar + "GradeBook" + Path.DirectorySeparatorChar + "GradeBooks" + Path.DirectorySeparatorChar + "RankedGradeBook.cs";
             var input = File.ReadAllText(filePath);
 
@@ -76,7 +75,6 @@ namespace GradeBookTests
                 Assert.True(false, "`RankedGradeBook.GetLetterGrade` is either not overriding `BaseGradeBook.GetLetterGrade` or is using `base.GetLetterGrade` within the override.");
             }
         }
-
         [Fact(DisplayName = "Top 20 Percent Get An A @override-getlettergrade-a")]
         public void TopTwentyPercentGetAnATests()
         {
@@ -92,7 +90,6 @@ namespace GradeBookTests
                 gradeBook = Activator.CreateInstance(rankedGradeBook, "Test GradeBook");
 
             MethodInfo method = rankedGradeBook.GetMethod("GetLetterGrade");
-
             var students = new List<Student>
             {
                 new Student("jamie",StudentType.Standard,EnrollmentType.Campus)
@@ -118,10 +115,7 @@ namespace GradeBookTests
             };
 
             gradeBook.GetType().GetProperty("Students").SetValue(gradeBook, students);
-
             Assert.True((char)method.Invoke(gradeBook, new object[] { 100 }) == 'A', "`GradeBook.GradeBooks.RankedGradeBook.GetLetterGrade` didn't give an A to students in the top 20% of the class.");
-
-
             var filePath = ".." + Path.DirectorySeparatorChar + ".." + Path.DirectorySeparatorChar + ".." + Path.DirectorySeparatorChar + ".." + Path.DirectorySeparatorChar + "GradeBook" + Path.DirectorySeparatorChar + "GradeBooks" + Path.DirectorySeparatorChar + "RankedGradeBook.cs";
             var input = File.ReadAllText(filePath);
 
@@ -141,7 +135,6 @@ namespace GradeBookTests
                 Assert.True(false, "`RankedGradeBook.GetLetterGrade` is either not overriding `BaseGradeBook.GetLetterGrade` or is using `base.GetLetterGrade` within the override.");
             }
         }
-
         [Fact(DisplayName = "Second 20 Percent Get An B @override-getlettergrade-b")]
         public void SecondTwentyPercentGetABTests()
         {
@@ -184,7 +177,6 @@ namespace GradeBookTests
             gradeBook.GetType().GetProperty("Students").SetValue(gradeBook, students);
             Assert.True((char)method.Invoke(gradeBook, new object[] { 75 }) == 'B', "`GradeBook.GradeBooks.RankedGradeBook.GetLetterGrade` didn't give an B to students between the top 20 and 40% of the class.");
         }
-
         [Fact(DisplayName = "Third 20 Percent Get An C @override-getlettergrade-c")]
         public void ThirdTwentyPercentGetACTests()
         {
@@ -226,6 +218,7 @@ namespace GradeBookTests
             };
 
             gradeBook.GetType().GetProperty("Students").SetValue(gradeBook, students);
+
             Assert.True((char)method.Invoke(gradeBook, new object[] { 50 }) == 'C', "`GradeBook.GradeBooks.RankedGradeBook.GetLetterGrade` didn't give an C to students between the top 40 and 60% of the class.");
         }
 
@@ -271,6 +264,7 @@ namespace GradeBookTests
 
             gradeBook.GetType().GetProperty("Students").SetValue(gradeBook, students);
 
+            //Test if D is given when input grade is between the top 60 and 80%.
             Assert.True((char)method.Invoke(gradeBook, new object[] { 25 }) == 'D', "`GradeBook.GradeBooks.RankedGradeBook.GetLetterGrade` didn't give an D to students between the top 60 and 80% of the class.");
         }
     }
