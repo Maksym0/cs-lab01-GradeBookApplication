@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,13 +11,9 @@ namespace GradeBookTests
 {
     public class CreateStatisticsOverridesTests
     {
-        /// <summary>
-        ///     All tests related to the "Create CalculateStatistics Override" Task.
-        /// </summary>
         [Fact(DisplayName = "Create CalculateStatistics Override @create-override-calculatestatistics")]
         public void OverrideCalculateStatisticsTest()
         {
-            //Setup Test
             var rankedGradeBook = TestHelpers.GetUserType("GradeBook.GradeBooks.RankedGradeBook");
             Assert.True(rankedGradeBook != null, "`RankedGradeBook` wasn't found in the `GradeBooks.GradeBook` namespace.");
 
@@ -35,7 +31,6 @@ namespace GradeBookTests
 
             try
             {
-                //Test that message was written to console when there are less than 5 students.
                 using (var consolestream = new StringWriter())
                 {
                     Console.SetOut(consolestream);
@@ -44,7 +39,6 @@ namespace GradeBookTests
 
                     Assert.True(output.Contains("5 students") || output.Contains("five students"), "`GradeBook.GradeBooks.RankedGradeBook.CalculateStatistics` didn't respond with 'Ranked grading requires at least 5 students.' when there were less than 5 students.");
 
-                    //Test that the base calculate statistics didn't still run when there were less than 5 students.
                     Assert.True(!output.Contains("average grade of all students is"), "`GradeBook.GradeBooks.RankedGradeBook.CalculateStatistics` still ran the base `CalculateStatistics` when there was less than 5 students.");
                 }
             }
@@ -80,7 +74,6 @@ namespace GradeBookTests
 
             gradeBook.GetType().GetProperty("Students").SetValue(gradeBook, students);
 
-            //Test that the base calculate statistics did run when there were 5 or more students.
             output = string.Empty;
 
             try
@@ -101,13 +94,9 @@ namespace GradeBookTests
             }
         }
 
-        /// <summary>
-        ///     All tests related to the "Create CalculateStudentStatistics Override" Task.
-        /// </summary>
         [Fact(DisplayName = "Create CalculateStudentStatistics Override @create-override-calculatestudentstatistics")]
         public void OverrideCalculateStudentStatisticsTest()
         {
-            //Setup Test
             var rankedGradeBook = TestHelpers.GetUserType("GradeBook.GradeBooks.RankedGradeBook");
             Assert.True(rankedGradeBook != null, "GradeBook.GradeBooks.RankedGradeBook doesn't exist.");
 
@@ -138,7 +127,6 @@ namespace GradeBookTests
 
             try
             {
-                //Test that message was written to console when there are less than 5 students.
                 using (var consolestream = new StringWriter())
                 {
                     Console.SetOut(consolestream);
@@ -147,7 +135,6 @@ namespace GradeBookTests
 
                     Assert.True(output.Contains("5 students") || output.Contains("five students"), "`GradeBook.GradeBooks.RankedGradeBook.CalculateStudentStatistics` didn't respond with 'Ranked grading requires at least 5 students.' when there were less than 5 students.");
 
-                    //Test that the base calculate statistics didn't still run when there were less than 5 students.
                     Assert.True(!output.Contains("grades:"), "`GradeBook.GradeBooks.RankedGradeBook.CalculateStudentStatistics` still ran the base `CalculateStudentStatistics` when there was less than 5 students.");
                 }
             }
@@ -183,7 +170,6 @@ namespace GradeBookTests
 
             gradeBook.GetType().GetProperty("Students").SetValue(gradeBook, students);
 
-            //Test that the base calculate statistics did run when there were 5 or more students.
             output = string.Empty;
 
             try
