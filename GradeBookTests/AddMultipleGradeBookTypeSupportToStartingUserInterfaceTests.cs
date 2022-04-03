@@ -8,11 +8,9 @@ namespace GradeBookTests
 {
     public class AddMultipleGradeBookTypeSupportToStartingUserInterfaceTests
     {
-
         [Fact(DisplayName = "Increase Parts Check To 3 Test @set-parts-check-to-3")]
         public void IncreasePartsCheckToThreeTest()
         {
-            //Bypass Test if Create Command for Weighted GPA has been started
             var rankedGradeBook = TestHelpers.GetUserType("GradeBook.GradeBooks.RankedGradeBook");
             Assert.True(rankedGradeBook != null, "`RankedGradeBook` wasn't found in the `GradeBooks.GradeBook` namespace.");
 
@@ -22,7 +20,6 @@ namespace GradeBookTests
             if (parameters.Count() == 2 && parameters[0].ParameterType == typeof(string) && parameters[1].ParameterType == typeof(bool))
                 return;
 
-            //Setup Test
             var output = string.Empty;
             
             try
@@ -35,8 +32,6 @@ namespace GradeBookTests
                         Console.SetOut(consolestream);
                         StartingUserInterface.CreateCommand("create test");
                         output = consolestream.ToString().ToLower();
-
-                        //Test that message written to console when parts.length != 3.
                         Assert.True(output.Contains("command not valid"), "`GradeBook.UserInterfaces.StartingUserInterface` didn't write a message to the console when the create command didn't contain both a name and type.");
                     }
                 }
@@ -49,14 +44,9 @@ namespace GradeBookTests
                 Console.SetIn(standardInput);
             }
         }
-
-        /// <summary>
-        ///     All Tests related to the "Update Validation Message" Task.
-        /// </summary>
         [Fact(DisplayName = "Update Validation Message Test @createcommand-type-error-message")]
         public void UpdateValidationMessageTest()
         {
-            //Bypass Test if Create Command for Weighted GPA has been started
             var rankedGradeBook = TestHelpers.GetUserType("GradeBook.GradeBooks.RankedGradeBook");
             Assert.True(rankedGradeBook != null, "`RankedGradeBook` wasn't found in the `GradeBooks.GradeBook` namespace.");
 
@@ -65,8 +55,6 @@ namespace GradeBookTests
             var parameters = ctor.GetParameters();
             if (parameters.Count() == 2 && parameters[0].ParameterType == typeof(string) && parameters[1].ParameterType == typeof(bool))
                 return;
-
-            //Setup Test
             var output = string.Empty;
             
             try
@@ -79,8 +67,6 @@ namespace GradeBookTests
                         Console.SetOut(consolestream);
                         StartingUserInterface.CreateCommand("create test");
                         output = consolestream.ToString().ToLower();
-
-                        //Test that message written to console is correct.
                         Assert.True(output.Contains("command not valid, create requires a name and type of gradebook."), "`GradeBook.UserInterfaces.StartingUserInterface` didn't write 'Command not valid, Create requires a name and type of gradebook.' to the console when the create command didn't contain both a name and type.");
                     }
                 }
@@ -93,14 +79,9 @@ namespace GradeBookTests
                 Console.SetIn(standardInput);
             }
         }
-
-        /// <summary>
-        ///     All tests related to the "Instantiate GradeBook" Task.
-        /// </summary>
         [Fact(DisplayName = "Instantiate GradeBook Test @createcommand-instantiate")]
         public void InstantiateGradeBookTest()
         {
-            //Bypass Test if Create Command for Weighted GPA has been started
             var rankedGradeBook = TestHelpers.GetUserType("GradeBook.GradeBooks.RankedGradeBook");
             Assert.True(rankedGradeBook != null, "`RankedGradeBook` wasn't found in the `GradeBooks.GradeBook` namespace.");
 
@@ -109,14 +90,11 @@ namespace GradeBookTests
             var parameters = ctor.GetParameters();
             if (parameters.Count() == 2 && parameters[0].ParameterType == typeof(string) && parameters[1].ParameterType == typeof(bool))
                 return;
-
-            //Setup Test
             var output = string.Empty;
             
 
             try
             {
-                //Test that a `StandardGradeBook` is created with the correct name when value is "standard".
                 using (var consoleInputStream = new StringReader("close"))
                 {
                     Console.SetIn(consoleInputStream);
@@ -137,8 +115,6 @@ namespace GradeBookTests
                 StreamReader standardInput = new StreamReader(Console.OpenStandardInput());
                 Console.SetIn(standardInput);
             }
-
-            //Test that a `RankedGradeBook` is created with the correct name when value is "ranked".
             output = string.Empty;
             
 
@@ -164,8 +140,6 @@ namespace GradeBookTests
                 StreamReader standardInput = new StreamReader(Console.OpenStandardInput());
                 Console.SetIn(standardInput);
             }
-
-            //Test that the correct message is written to console when value isn't handled.
             output = string.Empty;
             
 
@@ -188,14 +162,9 @@ namespace GradeBookTests
                 Console.SetIn(standardInput);
             }
         }
-
-        /// <summary>
-        ///     All Tests related to "Update StartingUserInterfaces HelpCommand Method" Task.
-        /// </summary>
         [Fact(DisplayName = "Update StartingUserInterface's HelpCommand Method Test @update-startinguserinterface-s-helpcommand-method")]
         public void UpdateHelpCommandTest()
         {
-            //Setup Test
             var output = string.Empty;
 
             try
@@ -209,12 +178,8 @@ namespace GradeBookTests
                         Console.SetOut(consolestream);
                         StartingUserInterface.HelpCommand();
                         output = consolestream.ToString().ToLower();
-
-                        // If help command is updated for weighted GPA bypass test
                         if (output.Contains("create 'name' 'type' 'weighted' - creates a new gradebook where 'name' is the name of the gradebook, 'type' is what type of grading it should use, and 'weighted' is whether or not grades should be weighted (true or false)."))
                             return;
-
-                        // Test if help command message is correct
                         Assert.True(output.Contains("create 'name' 'type' - creates a new gradebook where 'name' is the name of the gradebook and 'type' is what type of grading it should use."), "`GradeBook.UserInterfaces.StartingUserInterface.HelpCommand` didn't write \"Create 'Name' 'Type' - Creates a new gradebook where 'Name' is the name of the gradebook and 'Type' is what type of grading it should use.\"");
                     }
                 }
