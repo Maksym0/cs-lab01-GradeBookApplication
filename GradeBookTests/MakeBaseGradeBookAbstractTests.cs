@@ -5,7 +5,6 @@ namespace GradeBookTests
 {
     public class MakeBaseGradeBookAbstractTests
     {
-
         [Fact(DisplayName = "Make BaseGradeBook Abstract @make-basegradebook-abstract")]
         public void MakeBaseGradeBookAbstract()
         {
